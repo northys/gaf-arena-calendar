@@ -1,0 +1,15 @@
+{
+  "name": "gaf-arena-calendar",
+  "version": "1.0.0",
+  "description": "ICS calendar server for GAF Arena Žamberk ice rink",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "scrape": "node scraper.js"
+  },
+  "dependencies": {
+    "express": "^4.22.1",
+    "puppeteer": "^23.0.0"
+  }
+}
