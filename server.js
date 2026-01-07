@@ -58,6 +58,18 @@ function eventsToICS(events) {
       lines.push(`DTEND;TZID=Europe/Prague:${formatICSDate(end)}`);
       lines.push(`SUMMARY:${event.title}`);
       lines.push('LOCATION:GAF Aréna Žamberk');
+      // 1 hour reminder
+      lines.push('BEGIN:VALARM');
+      lines.push('TRIGGER:-PT1H');
+      lines.push('ACTION:DISPLAY');
+      lines.push('DESCRIPTION:Veřejné bruslení za 1 hodinu');
+      lines.push('END:VALARM');
+      // 30 min reminder
+      lines.push('BEGIN:VALARM');
+      lines.push('TRIGGER:-PT30M');
+      lines.push('ACTION:DISPLAY');
+      lines.push('DESCRIPTION:Veřejné bruslení za 30 minut');
+      lines.push('END:VALARM');
       lines.push('END:VEVENT');
     } catch (e) {
       console.error(`Failed to parse event: ${event.title}`, e.message);
