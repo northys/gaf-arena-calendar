@@ -55,6 +55,7 @@ export async function scrapeCalendar() {
         eventItems.forEach(item => {
           const startTime = item.getAttribute('data-start');
           const endTime = item.getAttribute('data-end');
+          const eventId = item.getAttribute('data-event');
 
           // Parse title from text content
           // Format: "16:00 - 17:30- Správa sportovišť města Žamberk-veřejné bruslení"
@@ -77,6 +78,7 @@ export async function scrapeCalendar() {
             const endFormatted = endTime?.match(/\d{2}:\d{2}/)?.[0] || endTime;
 
             timelineData.push({
+              id: eventId,
               date: dayDate,
               time: endFormatted ? `${startFormatted} - ${endFormatted}` : startFormatted,
               title: title || '-',

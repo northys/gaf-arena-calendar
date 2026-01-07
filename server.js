@@ -24,6 +24,11 @@ function formatICSDate(dt) {
 }
 
 function generateUID(event) {
+  // Use stable event ID from source if available
+  if (event.id) {
+    return `event-${event.id}@gaf-arena-zamberk`;
+  }
+  // Fallback to hash
   const hash = Buffer.from(`${event.date}-${event.time}-${event.title}`).toString('base64');
   return `${hash}@gaf-arena-zamberk`;
 }
