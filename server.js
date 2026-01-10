@@ -3,6 +3,25 @@ import { scrapeCalendar } from './scraper.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+let cache = {
+  data: null,
+  timestamp: 0
+};
+
+async function getCachedData() {
+  const now = Date.now();
+  if (cache.data && (now - cache.timestamp) < CACHE_TTL_MS) {
+    console.log(`[${new Date().toISOString()}] Using cached data (age: ${Math.round((now - cache.timestamp) / 1000)}s)`);
+    return cache.data;
+  }
+
+  console.log(`[${new Date().toISOString()}] Cache miss, scraping...`);
+  const data = await scrapeCalendar();
+  cache = { data, timestamp: now };
+  return data;
+}
 
 function parseDateTime(dateStr, timeStr) {
   // dateStr: "5.1.2026", timeStr: "16:00 - 17:30"
@@ -89,7 +108,7 @@ app.get('/calendar.ics', async (req, res) => {
   console.log(`[${new Date().toISOString()}] ICS request received`);
 
   try {
-    const data = await scrapeCalendar();
+    const data = await getCachedData();
 
     // Filter only public skating events
     const publicSkating = data.events.filter(e =>
